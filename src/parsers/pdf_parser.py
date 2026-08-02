@@ -57,7 +57,7 @@ def parse_pdf(pdf_path, output_img_dir="data/extracted_images"):
                             "size": round(span["size"], 1),
                             "is_latex": is_math
                         })
-                        
+
         for img_idx, img in enumerate(page.get_images(full=True), start=1):
             xref = img[0]
             base_img = doc.extract_image(xref)
@@ -73,3 +73,27 @@ def parse_pdf(pdf_path, output_img_dir="data/extracted_images"):
 
     doc.close()
     return structured_data
+
+
+if __name__ == "__main__":
+
+    current_script_path = os.path.abspath(__file__)
+    parsers_dir = os.path.dirname(current_script_path)
+    src_dir = os.path.dirname(parsers_dir)
+    project_root = os.path.dirname(src_dir)
+    
+    # Construct exact absolute path to the PDF
+    sample_pdf = os.path.join(project_root, "data", "raw_pdfs", "sample_fonts_test.pdf")
+    output_file = os.path.join(project_root, "outputs", "day1_structured_output.json")
+    
+    print(f" Searching for file at: {sample_pdf}")
+    
+    if os.path.exists(sample_pdf):
+        result = parse_pdf(sample_pdf)
+        
+        with open(output_file, "w", encoding="utf-8") as f:
+            json.dump(result, f, indent=2, ensure_ascii=False)
+            
+        print(f" Success! Structured JSON saved to '{output_file}'")
+    else:
+        print(f" File still not found at: '{sample_pdf}'")

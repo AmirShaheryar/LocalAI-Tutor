@@ -1,0 +1,103 @@
+{
+  "document": "sample_fonts_test.pdf",
+  "total_pages": 1,
+  "pages": [
+    {
+      "page_number": 1,
+      "content_blocks": [
+        {
+          "type": "text",
+          "content": "AI Research Report",
+          "font": "Helvetica-Bold",
+          "size": 18.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Introduction",
+          "font": "Times-Bold",
+          "size": 14.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Artificial Intelligence (AI) is transforming industries through machine learning and deep learning.",
+          "font": "Helvetica",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Key Technologies",
+          "font": "Times-Bold",
+          "size": 14.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "• Machine Learning",
+          "font": "Helvetica",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "• Deep Learning",
+          "font": "Helvetica",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "• Natural Language Processing",
+          "font": "Helvetica",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "• Computer Vision",
+          "font": "Helvetica",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Python Example",
+          "font": "Times-Bold",
+          "size": 14.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "import numpy as np",
+          "font": "Courier",
+          "size": 8.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "print(np.mean([1,2,3,4,5]))",
+          "font": "Courier",
+          "size": 8.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Bold Text Example",
+          "font": "Helvetica-Bold",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Italic Text Example",
+          "font": "Helvetica-Oblique",
+          "size": 10.0,
+          "is_latex": false
+        }
+      ],
+      "extracted_images": []
+    }
+  ]
+}
