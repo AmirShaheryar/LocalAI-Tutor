@@ -57,3 +57,19 @@ def parse_pdf(pdf_path, output_img_dir="data/extracted_images"):
                             "size": round(span["size"], 1),
                             "is_latex": is_math
                         })
+                        
+        for img_idx, img in enumerate(page.get_images(full=True), start=1):
+            xref = img[0]
+            base_img = doc.extract_image(xref)
+            img_filename = f"page_{page_num}_img_{img_idx}.{base_img['ext']}"
+            img_path = os.path.join(output_img_dir, img_filename)
+            
+            with open(img_path, "wb") as f:
+                f.write(base_img["image"])
+            
+            page_data["extracted_images"].append(img_path)
+
+        structured_data["pages"].append(page_data)
+
+    doc.close()
+    return structured_data
