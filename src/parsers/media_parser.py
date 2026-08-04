@@ -58,6 +58,7 @@ def format_timestamp(seconds):
     return f"{minutes:02d}:{secs:02d}"
 
 if __name__ == "__main__":
+    
     current_script_path = os.path.abspath(__file__)
     parsers_dir = os.path.dirname(current_script_path)
     src_dir = os.path.dirname(parsers_dir)
