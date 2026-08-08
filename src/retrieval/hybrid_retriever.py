@@ -104,3 +104,41 @@ def reciprocal_rank_fusion(vector_hits, keyword_hits, k=60, top_n=20):
 
     ranked_ids = sorted(fused_scores, key=fused_scores.get, reverse=True)[:top_n]
     return [doc_lookup[doc_id] for doc_id in ranked_ids]
+
+_reranker = None
+
+
+def _get_reranker():
+    """Lazily loads the cross-encoder reranker model (downloads ~1.1GB first run)."""
+    global _reranker
+    if _reranker is None:
+        print(" Loading cross-encoder reranker (BAAI/bge-reranker-base)...")
+        _reranker = CrossEncoder("BAAI/bge-reranker-base")
+    return _reranker
+
+
+def rerank(query, candidates, top_k=5):
+    """
+    Re-scores each candidate chunk by reading it TOGETHER with the query
+    (unlike vector/BM25 search, which score query and chunk separately),
+    then keeps only the top_k most relevant ones.
+    """
+    if not candidates:
+        return []
+
+    reranker = _get_reranker()
+
+    pairs = [(query, c["text"]) for c in candidates]
+    scores = reranker.predict(pairs)
+
+    scored_candidates = list(zip(candidates, scores))
+    scored_candidates.sort(key=lambda x: x[1], reverse=True)
+
+    top_candidates = scored_candidates[:top_k]
+
+    results = []
+    for hit, score in top_candidates:
+        hit_with_score = dict(hit)
+        hit_with_score["rerank_score"] = float(score)
+        results.append(hit_with_score)
+    return results
