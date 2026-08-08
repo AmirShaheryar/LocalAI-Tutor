@@ -5,23 +5,15 @@ import torch
 from PIL import Image
 from transformers import CLIPModel, CLIPProcessor
 
-# 1. RESOLVE ABSOLUTE PATHS (same pattern as vector_store.py)
 current_script_path = os.path.abspath(__file__)
 database_dir = os.path.dirname(current_script_path)
 src_dir = os.path.dirname(database_dir)
 project_root = os.path.dirname(src_dir)
 chroma_db_path = os.path.join(project_root, "data", "chroma_db")
 
-# 2. INITIALIZE CHROMADB CLIENT
-# NOTE: images get their OWN collection ("course_images"), separate from
-# "course_materials" (text). CLIP vectors (512-dim) and MiniLM vectors (384-dim)
-# are different sizes and different spaces -- ChromaDB can't mix them in one
-# collection. We pass embeddings manually, so no embedding_function is set here.
 client = chromadb.PersistentClient(path=chroma_db_path)
 image_collection = client.get_or_create_collection(name="course_images")
 
-# 3. LOAD CLIP (downloads ~600MB from Hugging Face on first run, then cached)
-print(" Loading CLIP model (first run only downloads ~600MB)...")
 CLIP_MODEL_NAME = "openai/clip-vit-base-patch32"
 clip_model = CLIPModel.from_pretrained(CLIP_MODEL_NAME)
 clip_processor = CLIPProcessor.from_pretrained(CLIP_MODEL_NAME)
@@ -106,7 +98,6 @@ if __name__ == "__main__":
     day1_json = os.path.join(project_root, "outputs", "day1_structured_output.json")
     process_and_index_images(day1_json)
 
-    # quick sanity check
     print("\n Sanity check image search:")
     results = search_images_by_text("a diagram or chart")
     for meta, dist in zip(results["metadatas"][0], results["distances"][0]):
