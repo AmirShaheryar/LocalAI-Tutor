@@ -36,7 +36,7 @@ def _build_bm25_index():
     global _bm25_index, _bm25_corpus_ids, _bm25_corpus_docs, _bm25_corpus_metas
 
     if _bm25_index is not None:
-        return  # already built, don't redo the work
+        return  
 
     print("🔤 Building BM25 keyword index from ChromaDB contents...")
     all_data = collection.get(include=["documents", "metadatas"])
