@@ -174,3 +174,5 @@ if __name__ == "__main__":
         location = meta.get("page", meta.get("start"))
         print(f"{i}. [{meta['type']} @ {location}] score={chunk['rerank_score']:.3f}")
         print(f"   {chunk['text'][:150]}...\n")
+
+        
