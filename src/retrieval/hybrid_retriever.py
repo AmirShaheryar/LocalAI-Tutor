@@ -83,3 +83,24 @@ def keyword_search(query, top_k=20):
             "metadata": _bm25_corpus_metas[i],
         })
     return hits
+
+def reciprocal_rank_fusion(vector_hits, keyword_hits, k=60, top_n=20):
+    """
+    Merges two differently-scored ranked lists into one ranking, using
+    each result's RANK (position) rather than its raw score -- because
+    cosine similarity and BM25 scores are on completely different scales
+    and can't be compared directly.
+    """
+    fused_scores = {}
+    doc_lookup = {}
+
+    for rank, hit in enumerate(vector_hits):
+        fused_scores[hit["id"]] = fused_scores.get(hit["id"], 0) + 1 / (k + rank + 1)
+        doc_lookup[hit["id"]] = hit
+
+    for rank, hit in enumerate(keyword_hits):
+        fused_scores[hit["id"]] = fused_scores.get(hit["id"], 0) + 1 / (k + rank + 1)
+        doc_lookup[hit["id"]] = hit
+
+    ranked_ids = sorted(fused_scores, key=fused_scores.get, reverse=True)[:top_n]
+    return [doc_lookup[doc_id] for doc_id in ranked_ids]
