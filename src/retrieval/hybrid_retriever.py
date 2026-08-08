@@ -142,3 +142,35 @@ def rerank(query, candidates, top_k=5):
         hit_with_score["rerank_score"] = float(score)
         results.append(hit_with_score)
     return results
+
+def hybrid_retrieve(query, vector_k=20, keyword_k=20, fusion_k=20, final_k=5):
+    """
+    Full Day 4 pipeline: vector search + keyword search -> RRF fusion
+    -> cross-encoder rerank -> top final_k context chunks.
+
+    This is the function described in the Day 4 deliverable:
+    "a retrieval function that takes a query and returns the top 5
+    most relevant context chunks."
+    """
+    vector_hits = vector_search(query, top_k=vector_k)
+    keyword_hits = keyword_search(query, top_k=keyword_k)
+
+    fused_candidates = reciprocal_rank_fusion(
+        vector_hits, keyword_hits, top_n=fusion_k
+    )
+
+    final_results = rerank(query, fused_candidates, top_k=final_k)
+    return final_results
+
+
+if __name__ == "__main__":
+    test_query = "What is backpropagation?"
+    print(f"\n Query: {test_query}\n")
+
+    top_chunks = hybrid_retrieve(test_query)
+
+    for i, chunk in enumerate(top_chunks, start=1):
+        meta = chunk["metadata"]
+        location = meta.get("page", meta.get("start"))
+        print(f"{i}. [{meta['type']} @ {location}] score={chunk['rerank_score']:.3f}")
+        print(f"   {chunk['text'][:150]}...\n")
