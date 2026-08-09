@@ -44,3 +44,48 @@ def build_context_block(chunks):
         lines.append(f"Source {i} {citation}:\n{chunk['text']}\n")
 
     return "\n".join(lines)
+
+def generate_answer(query, stream_output=True):
+    """
+    Full Day 5 pipeline: retrieve -> build context -> stream an LLM answer
+    with citations. This is the command-line RAG pipeline deliverable.
+    """
+    print(" Retrieving relevant context...")
+    chunks = hybrid_retrieve(query)
+
+    if not chunks:
+        print("No relevant context found in the indexed materials.")
+        return "I don't have enough information in the provided materials to answer that."
+
+    context_block = build_context_block(chunks)
+
+    user_prompt = f"""CONTEXT:
+{context_block}
+
+QUESTION: {query}
+
+Answer the question using only the CONTEXT above, citing every claim."""
+
+    print(f"\n Answer:\n")
+
+    full_answer = ""
+    response_stream = ollama.chat(
+        model=OLLAMA_MODEL,
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt},
+        ],
+        stream=stream_output,
+    )
+
+    if stream_output:
+        for chunk in response_stream:
+            token = chunk["message"]["content"]
+            print(token, end="", flush=True)
+            full_answer += token
+        print("\n")
+    else:
+        full_answer = response_stream["message"]["content"]
+        print(full_answer)
+
+    return full_answer
