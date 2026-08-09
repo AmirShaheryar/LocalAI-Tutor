@@ -89,3 +89,16 @@ Answer the question using only the CONTEXT above, citing every claim."""
         print(full_answer)
 
     return full_answer
+
+if __name__ == "__main__":
+    print(" Local RAG Tutor -- ask a question (type 'quit' to exit)\n")
+
+    while True:
+        query = input("You: ").strip()
+        if query.lower() in ("quit", "exit"):
+            break
+        if not query:
+            continue
+
+        generate_answer(query)
+        print("-" * 60)
