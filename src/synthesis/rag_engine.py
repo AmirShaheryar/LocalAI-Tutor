@@ -1,4 +1,16 @@
 import os
+import sys
+
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8")
+
+current_script_path = os.path.abspath(__file__)
+synthesis_dir = os.path.dirname(current_script_path)
+src_dir = os.path.dirname(synthesis_dir)
+project_root = os.path.dirname(src_dir)
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
 import ollama
 from src.retrieval.hybrid_retriever import hybrid_retrieve
 
