@@ -38,7 +38,7 @@ def _build_bm25_index():
     if _bm25_index is not None:
         return  
 
-    print("🔤 Building BM25 keyword index from ChromaDB contents...")
+    print(" Building BM25 keyword index from ChromaDB contents...")
     all_data = collection.get(include=["documents", "metadatas"])
 
     _bm25_corpus_ids = all_data["ids"]
@@ -164,7 +164,7 @@ def hybrid_retrieve(query, vector_k=20, keyword_k=20, fusion_k=20, final_k=5):
 
 
 if __name__ == "__main__":
-    test_query = "What is backpropagation?"
+    test_query = "When the story becomes a trailer fight?"
     print(f"\n Query: {test_query}\n")
 
     top_chunks = hybrid_retrieve(test_query)

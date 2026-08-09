@@ -1,0 +1,10 @@
+PyMuPDF
+faster-whisper
+chromadb
+sentence-transformers
+langchain-text-splitters
+torch
+transformers==4.46.3
+Pillow
+rank_bm25
+ollama
