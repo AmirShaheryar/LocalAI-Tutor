@@ -63,3 +63,25 @@ RULES YOU MUST FOLLOW:
   ]
 }
 """
+
+def _build_context_block(chunks):
+    """Joins retrieved chunks into plain study material text for the quiz prompt.
+    (Simpler than rag_engine's version -- quizzes don't need citation tags.)"""
+    return "\n\n".join(chunk["text"] for chunk in chunks)
+
+
+def _extract_json(raw_text):
+    """Strips markdown fences or stray text the model might add despite instructions,
+    then returns the parsed JSON dict. Raises ValueError if it still can't be parsed."""
+    text = raw_text.strip()
+
+    fence_match = re.search(r"```(?:json)?\s*([\s\S]*?)```", text)
+    if fence_match:
+        text = fence_match.group(1).strip()
+
+    if not text.startswith("{"):
+        brace_match = re.search(r"\{[\s\S]*\}", text)
+        if brace_match:
+            text = brace_match.group(0)
+
+    return json.loads(text)  # raises json.JSONDecodeError if still broken
