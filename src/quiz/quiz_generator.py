@@ -109,3 +109,57 @@ def _validate_quiz_schema(quiz):
             return False, "A short-answer entry is missing required fields."
 
     return True, None
+
+def generate_quiz(topic_query, num_mcq=3, num_fib=2, num_short=2, max_retries=2):
+    """
+    Full Day 6 pipeline: retrieve relevant course content -> prompt the LLM for a
+    structured JSON quiz -> validate -> retry once if broken.
+    """
+    print(f" Retrieving material for topic: {topic_query!r}")
+    chunks = hybrid_retrieve(topic_query)
+
+    if not chunks:
+        print("No relevant material found -- cannot generate a quiz on this topic.")
+        return None
+
+    context_block = _build_context_block(chunks)
+
+    user_prompt = f"""CONTEXT:
+{context_block}
+
+Generate a quiz from the CONTEXT above with exactly:
+- {num_mcq} multiple-choice questions
+- {num_fib} fill-in-the-blank questions
+- {num_short} short-answer questions
+
+Output ONLY the JSON object, nothing else."""
+
+    last_error = None
+    for attempt in range(1, max_retries + 2):
+        print(f" Generating quiz (attempt {attempt})...")
+        response = ollama.chat(
+            model=OLLAMA_MODEL,
+            messages=[
+                {"role": "system", "content": QUIZ_SYSTEM_PROMPT},
+                {"role": "user", "content": user_prompt},
+            ],
+        )
+        raw_text = response["message"]["content"]
+
+        try:
+            quiz = _extract_json(raw_text)
+        except (json.JSONDecodeError, ValueError) as e:
+            last_error = f"JSON parse failed: {e}"
+            print(f" ⚠️  {last_error}")
+            continue
+
+        is_valid, error_message = _validate_quiz_schema(quiz)
+        if is_valid:
+            print(" ✅ Valid quiz generated.")
+            return quiz
+
+        last_error = f"Schema validation failed: {error_message}"
+        print(f" ⚠️  {last_error}")
+
+    print(f" ❌ Giving up after {max_retries + 1} attempts. Last error: {last_error}")
+    return None
