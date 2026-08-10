@@ -51,3 +51,50 @@ with tab1:
             st.markdown(answer)
 
         st.session_state.chat_history.append(("assistant", answer))
+
+with tab2:
+    st.subheader("Generate a practice quiz")
+
+    topic_input = st.text_input("Topic to quiz yourself on:")
+
+    if st.button("Generate Quiz"):
+        with st.spinner("Reranking context..."):
+            quiz = generate_quiz(topic_input)
+        if quiz:
+            st.session_state.current_quiz = quiz
+            st.session_state.quiz_submitted = False
+        else:
+            st.error("Couldn't generate a quiz -- try a topic covered in your material.")
+
+    quiz = st.session_state.current_quiz
+    if quiz:
+        st.divider()
+        mcq_answers = []
+        for i, q in enumerate(quiz.get("mcq", [])):
+            st.markdown(f"**{i+1}. {q['question']}**")
+            choice = st.radio("Choose one:", q["options"], key=f"mcq_{i}", label_visibility="collapsed")
+            mcq_answers.append(choice)
+
+        fib_answers = []
+        for i, q in enumerate(quiz.get("fill_in_blank", [])):
+            st.markdown(f"**{q['question']}**")
+            ans = st.text_input("Your answer:", key=f"fib_{i}")
+            fib_answers.append(ans)
+
+        for i, q in enumerate(quiz.get("short_answer", [])):
+            st.markdown(f"**{q['question']}**")
+            st.text_area("Your answer (self-graded):", key=f"sa_{i}")
+            with st.expander("Show model answer"):
+                st.write(q["model_answer"])
+
+        if st.button("Submit Quiz"):
+            all_answers = mcq_answers + fib_answers
+            grade_quiz(quiz, all_answers)
+            st.session_state.quiz_submitted = True
+
+        if st.session_state.quiz_submitted:
+            st.success("Quiz submitted! Feedback below:")
+            for i, q in enumerate(quiz.get("mcq", [])):
+                is_correct = mcq_answers[i] == q["correct_answer"]
+                icon = "✅" if is_correct else "❌"
+                st.markdown(f"{icon} **Q{i+1}:** {q['explanation']}")
