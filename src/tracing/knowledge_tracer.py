@@ -70,3 +70,49 @@ def _bkt_update(prior_mastery, is_correct):
     updated_mastery = posterior + (1 - posterior) * p_transit
 
     return round(updated_mastery, 4)
+
+
+def record_attempt(topic_id, is_correct, time_taken=None):
+    """
+    Call this every time a student answers a quiz question.
+    Updates and persists that topic's mastery score using BKT.
+    """
+    state = _load_state()
+
+    topic_state = state.get(topic_id, {
+        "mastery": BKT_PARAMS["p_init"],
+        "attempts": 0,
+        "correct": 0,
+        "history": [],
+    })
+
+    new_mastery = _bkt_update(topic_state["mastery"], is_correct)
+
+    topic_state["mastery"] = new_mastery
+    topic_state["attempts"] += 1
+    topic_state["correct"] += 1 if is_correct else 0
+    topic_state["history"].append({
+        "correct": is_correct,
+        "time_taken": time_taken,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    })
+
+    state[topic_id] = topic_state
+    _save_state(state)
+
+    print(f" [{topic_id}] mastery updated: {new_mastery:.2f} "
+          f"({'✔ correct' if is_correct else '✘ incorrect'}, attempt #{topic_state['attempts']})")
+
+    return new_mastery
+
+
+def get_mastery(topic_id):
+    """Returns current mastery for a topic, or the default p_init if never attempted."""
+    state = _load_state()
+    return state.get(topic_id, {}).get("mastery", BKT_PARAMS["p_init"])
+
+
+def get_all_mastery():
+    """Returns {topic_id: mastery} for every topic attempted so far -- feeds Day 8's dashboard."""
+    state = _load_state()
+    return {topic: data["mastery"] for topic, data in state.items()}
