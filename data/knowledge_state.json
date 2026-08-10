@@ -1,0 +1,26 @@
+{
+  "long_john_silver": {
+    "mastery": 0.7098,
+    "attempts": 1,
+    "correct": 1,
+    "history": [
+      {
+        "correct": true,
+        "time_taken": null,
+        "timestamp": "2026-08-10T14:40:18.940171+00:00"
+      }
+    ]
+  },
+  "AI": {
+    "mastery": 0.7098,
+    "attempts": 1,
+    "correct": 1,
+    "history": [
+      {
+        "correct": true,
+        "time_taken": null,
+        "timestamp": "2026-08-10T14:41:34.746058+00:00"
+      }
+    ]
+  }
+}
