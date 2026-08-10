@@ -159,3 +159,43 @@ def recommend_review(threshold=0.65):
         print(f" ⚠️  [{topic_id}] mastery {mastery:.2f} -- {location}")
 
     return recommendations
+
+def grade_quiz(quiz, user_answers):
+    """
+    Takes a quiz dict (from quiz_generator.py) and a matching list of the
+    student's answers, grades each question, and records it via BKT.
+
+    user_answers format: list of strings, same order as
+    quiz["mcq"] + quiz["fill_in_blank"] (short_answer isn't auto-gradable, skipped here).
+    """
+    gradable_questions = quiz.get("mcq", []) + quiz.get("fill_in_blank", [])
+
+    if len(user_answers) != len(gradable_questions):
+        print(f" ❌ Expected {len(gradable_questions)} answers, got {len(user_answers)}.")
+        return
+
+    for question, given_answer in zip(gradable_questions, user_answers):
+        is_correct = given_answer.strip().lower() == question["correct_answer"].strip().lower()
+        record_attempt(question["topic_id"], is_correct)
+
+
+if __name__ == "__main__":
+    print(" Knowledge Tracing -- Day 7 demo\n")
+    print("1. Simulate a quiz attempt")
+    print("2. View mastery report")
+    choice = input("Choose (1/2): ").strip()
+
+    if choice == "1":
+        topic = input("Topic ID: ").strip()
+        correct_input = input("Was it correct? (y/n): ").strip().lower()
+        record_attempt(topic, correct_input == "y")
+    else:
+        report = get_all_mastery()
+        print("\n===== MASTERY REPORT =====")
+        for topic, mastery in report.items():
+            bar = "█" * int(mastery * 20)
+            print(f"  {topic:30s} {mastery:.2f}  {bar}")
+        print()
+
+        
+        recommend_review()
