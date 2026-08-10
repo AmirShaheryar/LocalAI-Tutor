@@ -116,3 +116,46 @@ def get_all_mastery():
     """Returns {topic_id: mastery} for every topic attempted so far -- feeds Day 8's dashboard."""
     state = _load_state()
     return {topic: data["mastery"] for topic, data in state.items()}
+
+from src.retrieval.hybrid_retriever import hybrid_retrieve
+
+
+def recommend_review(threshold=0.65):
+    """
+    Scans all tracked topics, finds ones below mastery threshold, and looks up
+    where in the source material to review -- reuses your Day 4 retriever to
+    find the most relevant PDF page / video timestamp for that topic.
+    """
+    all_mastery = get_all_mastery()
+    weak_topics = {t: m for t, m in all_mastery.items() if m < threshold}
+
+    if not weak_topics:
+        print(" ✅ No weak topics -- all tracked topics are above threshold.")
+        return []
+
+    recommendations = []
+    for topic_id, mastery in sorted(weak_topics.items(), key=lambda x: x[1]):
+        # topic_ids are snake_case (e.g. "long_john_silver") -- turn back into
+        # a natural-language query for retrieval
+        query = topic_id.replace("_", " ")
+        chunks = hybrid_retrieve(query)
+
+        if not chunks:
+            location = "No matching source material found"
+        else:
+            top = chunks[0]["metadata"]
+            if top.get("type") == "pdf_text":
+                location = f"Review PDF Page {top.get('page')}"
+            elif top.get("type") == "video_transcript":
+                location = f"Rewatch Video @ {top.get('start')}s"
+            else:
+                location = "Review source material"
+
+        recommendations.append({
+            "topic_id": topic_id,
+            "mastery": mastery,
+            "recommendation": location,
+        })
+        print(f" ⚠️  [{topic_id}] mastery {mastery:.2f} -- {location}")
+
+    return recommendations
