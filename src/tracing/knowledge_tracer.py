@@ -1,0 +1,45 @@
+import os
+import sys
+import json
+from datetime import datetime, timezone
+
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8")
+
+# 1. RESOLVE ABSOLUTE PATHS (same pattern as your other modules)
+current_script_path = os.path.abspath(__file__)
+tracing_dir = os.path.dirname(current_script_path)
+src_dir = os.path.dirname(tracing_dir)
+project_root = os.path.dirname(src_dir)
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+state_path = os.path.join(project_root, "data", "knowledge_state.json")
+
+# 2. BKT PARAMETERS
+# These are standard "reasonable defaults" used across BKT literature/tutoring systems.
+# p_init:    probability a topic is already known before any attempt
+# p_transit: probability of learning it after ONE attempt (even a wrong one --
+#            you can learn from getting something wrong)
+# p_slip:    probability of a KNOWN topic being answered wrong by mistake (silly error)
+# p_guess:   probability of an UNKNOWN topic being answered right by luck (e.g. MCQ guess)
+BKT_PARAMS = {
+    "p_init": 0.3,
+    "p_transit": 0.15,
+    "p_slip": 0.1,
+    "p_guess": 0.2,
+}
+
+
+def _load_state():
+    """Loads the full knowledge state (all topics) from disk, or starts fresh."""
+    if not os.path.exists(state_path):
+        return {}
+    with open(state_path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _save_state(state):
+    os.makedirs(os.path.dirname(state_path), exist_ok=True)
+    with open(state_path, "w", encoding="utf-8") as f:
+        json.dump(state, f, indent=2, ensure_ascii=False)
