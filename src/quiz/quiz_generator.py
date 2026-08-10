@@ -163,3 +163,45 @@ Output ONLY the JSON object, nothing else."""
 
     print(f" ❌ Giving up after {max_retries + 1} attempts. Last error: {last_error}")
     return None
+
+def save_quiz(quiz, topic_query):
+    """Saves a generated quiz to outputs/quizzes/<slug>_quiz.json."""
+    slug = re.sub(r"[^a-z0-9]+", "_", topic_query.lower()).strip("_")
+    out_path = os.path.join(output_quiz_dir, f"{slug}_quiz.json")
+
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(quiz, f, indent=2, ensure_ascii=False)
+
+    print(f" 💾 Saved to {out_path}")
+    return out_path
+
+
+def print_quiz(quiz):
+    """Pretty-prints a quiz to the console for quick manual review."""
+    print("\n===== MULTIPLE CHOICE =====")
+    for i, q in enumerate(quiz.get("mcq", []), start=1):
+        print(f"\n{i}. [{q['topic_id']}] {q['question']}")
+        for opt in q["options"]:
+            marker = "✔" if opt == q["correct_answer"] else " "
+            print(f"   [{marker}] {opt}")
+        print(f"   Explanation: {q.get('explanation', '')}")
+
+    print("\n===== FILL IN THE BLANK =====")
+    for i, q in enumerate(quiz.get("fill_in_blank", []), start=1):
+        print(f"\n{i}. [{q['topic_id']}] {q['question']}")
+        print(f"   Answer: {q['correct_answer']}")
+
+    print("\n===== SHORT ANSWER =====")
+    for i, q in enumerate(quiz.get("short_answer", []), start=1):
+        print(f"\n{i}. [{q['topic_id']}] {q['question']}")
+        print(f"   Model answer: {q['model_answer']}")
+
+
+if __name__ == "__main__":
+    print(" Local Quiz Generator -- Day 6\n")
+    topic = input("Enter a topic/question to build a quiz around: ").strip()
+
+    quiz = generate_quiz(topic)
+    if quiz:
+        print_quiz(quiz)
+        save_quiz(quiz, topic)
