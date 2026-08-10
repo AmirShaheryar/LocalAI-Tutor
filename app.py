@@ -30,3 +30,24 @@ if "quiz_submitted" not in st.session_state:
 
 st.title("📚 LocalAI-Tutor")
 tab1, tab2, tab3 = st.tabs(["💬 Study Workspace", "📝 Practice & Quiz Center", "📊 Analytics"])
+
+with tab1:
+    st.subheader("Ask a question about your course material")
+
+    for role, message in st.session_state.chat_history:
+        with st.chat_message(role):
+            st.markdown(message)
+
+    user_question = st.chat_input("Ask something...")
+
+    if user_question:
+        st.session_state.chat_history.append(("user", user_question))
+        with st.chat_message("user"):
+            st.markdown(user_question)
+
+        with st.chat_message("assistant"):
+            with st.spinner("Searching database..."):
+                answer = generate_answer(user_question, stream_output=False)
+            st.markdown(answer)
+
+        st.session_state.chat_history.append(("assistant", answer))
