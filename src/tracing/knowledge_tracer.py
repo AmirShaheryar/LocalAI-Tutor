@@ -43,3 +43,30 @@ def _save_state(state):
     os.makedirs(os.path.dirname(state_path), exist_ok=True)
     with open(state_path, "w", encoding="utf-8") as f:
         json.dump(state, f, indent=2, ensure_ascii=False)
+
+def _bkt_update(prior_mastery, is_correct):
+    """
+    Standard 2-step BKT update:
+    Step A: revise belief about CURRENT mastery based on the observed answer (Bayes' rule)
+    Step B: account for the chance they LEARNED something from this attempt
+    """
+    p_slip = BKT_PARAMS["p_slip"]
+    p_guess = BKT_PARAMS["p_guess"]
+    p_transit = BKT_PARAMS["p_transit"]
+
+    if is_correct:
+        # P(known | answered correctly)
+        numerator = prior_mastery * (1 - p_slip)
+        denominator = numerator + (1 - prior_mastery) * p_guess
+    else:
+        # P(known | answered incorrectly)
+        numerator = prior_mastery * p_slip
+        denominator = numerator + (1 - prior_mastery) * (1 - p_guess)
+
+    posterior = numerator / denominator if denominator > 0 else prior_mastery
+
+    # Step B: apply learning transition -- even if they didn't know it,
+    # attempting the question gives some chance they now do
+    updated_mastery = posterior + (1 - posterior) * p_transit
+
+    return round(updated_mastery, 4)
