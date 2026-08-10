@@ -1,0 +1,64 @@
+{
+  "mcq": [
+    {
+      "topic_id": "treyer",
+      "question": "Who is the main character of this novel?",
+      "options": [
+        "Jim Hawkins",
+        "Long John Silver",
+        "Dr. Levy Seis",
+        "Quiet Reelani"
+      ],
+      "correct_answer": "Jim Hawkins",
+      "explanation": "The story is told by a young boy named Jim Hawkins who becomes the hero of the adventure."
+    },
+    {
+      "topic_id": "treyer",
+      "question": "What happens to the gold taken by Long John Silver?",
+      "options": [
+        "He keeps it for himself",
+        "He gives it to Jim Hawkins",
+        "It disappears in the map",
+        "The treasure is buried on an island"
+      ],
+      "correct_answer": "He keeps it for himself",
+      "explanation": "Long John Silver manages to escape, taking a small account amount of gold with him."
+    },
+    {
+      "topic_id": "treyer",
+      "question": "Who decides to organize Art Journey to find Art Royer?",
+      "options": [
+        "Jim Hawkins",
+        "Dr. Levy Seis and Quiet Reelani",
+        "Long John Silver",
+        "Ben Gen"
+      ],
+      "correct_answer": "Dr. Levy Seis and Quiet Reelani",
+      "explanation": "They hire a ship called the Hispenola to find Art Royer."
+    }
+  ],
+  "fill_in_blank": [
+    {
+      "topic_id": "treyer",
+      "question": "The treasure is hidden by the famous pirate ___________.",
+      "correct_answer": "Captain Prince"
+    },
+    {
+      "topic_id": "treyer",
+      "question": "Jim Hawkins overhears the pirates plan to take over the ship with their ___________.",
+      "correct_answer": "honest crew"
+    }
+  ],
+  "short_answer": [
+    {
+      "topic_id": "ai research",
+      "question": "What is one key technology transforming industries through machine learning and deep learning?",
+      "model_answer": "Machine Learning"
+    },
+    {
+      "topic_id": "ai research",
+      "question": "How does Python handle bold text in the given example?",
+      "model_answer": "with **bold** text"
+    }
+  ]
+}
