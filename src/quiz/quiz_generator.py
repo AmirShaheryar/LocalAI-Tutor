@@ -85,3 +85,27 @@ def _extract_json(raw_text):
             text = brace_match.group(0)
 
     return json.loads(text)  # raises json.JSONDecodeError if still broken
+
+def _validate_quiz_schema(quiz):
+    """Checks the parsed JSON actually has the shape we asked for.
+    Returns (is_valid, error_message)."""
+    required_keys = {"mcq", "fill_in_blank", "short_answer"}
+    if not required_keys.issubset(quiz.keys()):
+        missing = required_keys - quiz.keys()
+        return False, f"Missing top-level keys: {missing}"
+
+    for q in quiz.get("mcq", []):
+        if not all(k in q for k in ("topic_id", "question", "options", "correct_answer")):
+            return False, "An MCQ entry is missing required fields."
+        if q["correct_answer"] not in q["options"]:
+            return False, f"MCQ correct_answer '{q['correct_answer']}' not found in its own options list."
+
+    for q in quiz.get("fill_in_blank", []):
+        if not all(k in q for k in ("topic_id", "question", "correct_answer")):
+            return False, "A fill-in-blank entry is missing required fields."
+
+    for q in quiz.get("short_answer", []):
+        if not all(k in q for k in ("topic_id", "question", "model_answer")):
+            return False, "A short-answer entry is missing required fields."
+
+    return True, None
