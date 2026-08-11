@@ -162,4 +162,25 @@ with tab2:
                 is_correct = mcq_answers[i] == q["correct_answer"]
                 icon = "CORRECT" if is_correct else "WRONG"
                 st.markdown(f"**[{icon}] Q{i+1}:** {q['explanation']}")
+
+with tab3:
+    st.subheader("Topic Mastery")
+ 
+    mastery_data = get_all_mastery()
+ 
+    if not mastery_data:
+        st.info("No quiz attempts yet -- take a quiz in the Practice tab first.")
+    else:
+        st.bar_chart(mastery_data)
+ 
+        st.divider()
+        st.subheader("Recommended Review")
+        with st.spinner("Searching database..."):
+            recs = recommend_review()
+ 
+        if not recs:
+            st.success("You're above threshold on every tracked topic!")
+        else:
+            for rec in recs:
+                st.warning(f"**{rec['topic_id']}** (mastery: {rec['mastery']:.2f}) -- {rec['recommendation']}")
  
