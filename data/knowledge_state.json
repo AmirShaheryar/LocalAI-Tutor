@@ -22,5 +22,37 @@
         "timestamp": "2026-08-10T14:41:34.746058+00:00"
       }
     ]
+  },
+  "robert-lois-stevenson": {
+    "mastery": 0.6302,
+    "attempts": 5,
+    "correct": 3,
+    "history": [
+      {
+        "correct": true,
+        "time_taken": null,
+        "timestamp": "2026-08-10T14:58:53.277666+00:00"
+      },
+      {
+        "correct": true,
+        "time_taken": null,
+        "timestamp": "2026-08-10T14:58:53.310748+00:00"
+      },
+      {
+        "correct": true,
+        "time_taken": null,
+        "timestamp": "2026-08-10T14:58:53.335754+00:00"
+      },
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-10T14:58:53.352539+00:00"
+      },
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-10T14:58:53.385219+00:00"
+      }
+    ]
   }
 }
