@@ -176,7 +176,8 @@ Answer the question using only the CONTEXT above, citing every claim."""
                 st.markdown(answer)
 
                 shown_images = set()
-                for chunk in chunks:
+                shown_pdf_pages = set()
+                for i, chunk in enumerate(chunks):
                     meta = chunk["metadata"]
 
                     if meta["type"] == "pdf_text":
@@ -189,13 +190,16 @@ Answer the question using only the CONTEXT above, citing every claim."""
 
                         # button to view the actual PDF page, regardless of whether
                         # it has embedded diagrams -- this is the "PDF opener"
-                        page_btn_key = f"viewpdf_{meta['source']}_{meta['page']}"
-                        if st.button(f"View PDF Page {meta['page']} ({meta['source']})", key=page_btn_key):
-                            st.session_state["active_pdf_page"] = (meta["source"], meta["page"])
+                        page_key_tuple = (meta["source"], meta["page"])
+                        if page_key_tuple not in shown_pdf_pages:
+                            shown_pdf_pages.add(page_key_tuple)
+                            page_btn_key = f"viewpdf_{meta['source']}_{meta['page']}_{i}"
+                            if st.button(f"View PDF Page {meta['page']} ({meta['source']})", key=page_btn_key):
+                                st.session_state["active_pdf_page"] = (meta["source"], meta["page"])
 
                     elif meta["type"] == "video_transcript":
                         ts_label = format_timestamp(meta["start"])
-                        btn_key = f"jump_{meta['source']}_{meta['start']}"
+                        btn_key = f"jump_{meta['source']}_{meta['start']}_{i}"
                         if st.button(f"Jump to {ts_label} in {meta['source']}", key=btn_key):
                             st.session_state["active_video"] = meta["source"]
                             st.session_state["video_start"] = meta["start"]
