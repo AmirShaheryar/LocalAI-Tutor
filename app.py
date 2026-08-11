@@ -45,3 +45,73 @@ if "quiz_submitted" not in st.session_state:
  
 st.title("LocalAI-Tutor")
 tab1, tab2, tab3 = st.tabs(["Study Workspace", "Practice & Quiz Center", "Analytics"])
+
+
+with tab1:
+    st.subheader("Ask a question about your course material")
+ 
+    for role, message in st.session_state.chat_history:
+        with st.chat_message(role):
+            st.markdown(message)
+ 
+    user_question = st.chat_input("Ask something...")
+ 
+    if user_question:
+        st.session_state.chat_history.append(("user", user_question))
+        with st.chat_message("user"):
+            st.markdown(user_question)
+ 
+        with st.chat_message("assistant"):
+            with st.spinner("Searching database and reranking context..."):
+                chunks = hybrid_retrieve(user_question)
+ 
+            if not chunks:
+                answer = "I don't have enough information in the provided materials to answer that."
+                st.markdown(answer)
+            else:
+                context_block = build_context_block(chunks)
+                user_prompt = f"""CONTEXT:
+{context_block}
+ 
+QUESTION: {user_question}
+ 
+Answer the question using only the CONTEXT above, citing every claim."""
+ 
+                with st.spinner("Generating response..."):
+                    response = ollama.chat(
+                        model=OLLAMA_MODEL,
+                        messages=[
+                            {"role": "system", "content": SYSTEM_PROMPT},
+                            {"role": "user", "content": user_prompt},
+                        ],
+                    )
+                    answer = response["message"]["content"]
+ 
+                st.markdown(answer)
+ 
+                shown_images = set()
+                for chunk in chunks:
+                    meta = chunk["metadata"]
+ 
+                    if meta["type"] == "pdf_text":
+                        images = get_images_for_page(meta["source"], meta["page"])
+                        for img_path in images:
+                            if img_path not in shown_images and os.path.exists(img_path):
+                                st.image(img_path, caption=f"Diagram from Page {meta['page']}", width=350)
+                                shown_images.add(img_path)
+ 
+                    elif meta["type"] == "video_transcript":
+                        ts_label = format_timestamp(meta["start"])
+                        btn_key = f"jump_{meta['source']}_{meta['start']}"
+                        if st.button(f"Jump to {ts_label} in {meta['source']}", key=btn_key):
+                            st.session_state["active_video"] = meta["source"]
+                            st.session_state["video_start"] = meta["start"]
+ 
+        st.session_state.chat_history.append(("assistant", answer))
+ 
+    if st.session_state.get("active_video"):
+        video_path = os.path.join(project_root, "data", "raw_media", st.session_state["active_video"])
+        if os.path.exists(video_path):
+            st.divider()
+            st.video(video_path, start_time=int(st.session_state.get("video_start", 0)))
+ 
