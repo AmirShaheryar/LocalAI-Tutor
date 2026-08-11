@@ -77,14 +77,14 @@ if "quiz_submitted" not in st.session_state:
     st.session_state.quiz_submitted = False
 
 st.title("LocalAI-Tutor")
-tab1, tab2, tab3 = st.tabs(["Study Workspace", "Practice & Quiz Center", "Analytics"])
+tab1, tab2, tab3, tab4 = st.tabs(["Study Workspace", "Practice & Quiz Center", "Analytics", "My Library"])
 
 # ---------------- TAB 1: STUDY WORKSPACE ----------------
 with tab1:
     st.subheader("Upload study material")
 
     uploaded_file = st.file_uploader(
-        "Upload a PDF or lecture video", type=["pdf", "mp4", "mkv", "mov"]
+        "Upload a PDF, lecture video, or slide deck", type=["pdf", "mp4", "mkv", "mov", "pptx", "ppt"]
     )
 
     if uploaded_file is not None:
@@ -93,6 +93,8 @@ with tab1:
         if st.button("Process & Index this file"):
             if file_ext == "pdf":
                 save_dir = os.path.join(project_root, "data", "raw_pdfs")
+            elif file_ext in ("pptx", "ppt"):
+                save_dir = os.path.join(project_root, "data", "raw_ppts")
             else:
                 save_dir = os.path.join(project_root, "data", "raw_media")
             os.makedirs(save_dir, exist_ok=True)
@@ -115,7 +117,10 @@ with tab1:
                 with st.spinner("Indexing diagrams (CLIP)..."):
                     process_and_index_images(day1_json_path)
 
-            else:
+                hybrid_retriever_module._bm25_index = None
+                st.success(f"'{uploaded_file.name}' processed and indexed! Ask about it below.")
+
+            elif file_ext in ("mp4", "mkv", "mov"):
                 with st.spinner("Transcribing video -- this can take a few minutes..."):
                     transcribe_lecture(save_path, output_dir=os.path.join(project_root, "outputs"))
 
@@ -126,12 +131,17 @@ with tab1:
                     )
                     process_and_index_transcript(transcript_json_path)
 
-            # the BM25 keyword index is built ONCE and cached in memory the first
-            # time hybrid_retrieve() runs -- force it to rebuild so newly uploaded
-            # content is actually searchable, not just sitting in ChromaDB unseen
-            hybrid_retriever_module._bm25_index = None
+                # the BM25 keyword index is built ONCE and cached in memory the first
+                # time hybrid_retrieve() runs -- force it to rebuild so newly uploaded
+                # content is actually searchable, not just sitting in ChromaDB unseen
+                hybrid_retriever_module._bm25_index = None
+                st.success(f"'{uploaded_file.name}' processed and indexed! Ask about it below.")
 
-            st.success(f"'{uploaded_file.name}' processed and indexed! Ask about it below.")
+            else:
+                # PPTX/PPT: stored and viewable in "My Library", but not yet
+                # parsed/indexed -- that needs a dedicated pptx parser (not built yet)
+                st.success(f"'{uploaded_file.name}' uploaded! View it in the My Library tab.")
+                st.info("Note: slide content isn't searchable in chat yet -- only PDF and video are indexed currently.")
 
     st.divider()
     st.subheader("Ask a question about your course material")
@@ -254,8 +264,9 @@ with tab2:
         for i, q in enumerate(quiz.get("short_answer", [])):
             st.markdown(f"**{q['question']}**")
             st.text_area("Your answer (self-graded):", key=f"sa_{i}")
-            with st.expander("Show model answer"):
-                st.write(q["model_answer"])
+            if st.session_state.quiz_submitted:
+                with st.expander("Show model answer"):
+                    st.write(q["model_answer"])
 
         if st.button("Submit Quiz"):
             all_answers = mcq_answers + fib_answers
@@ -267,7 +278,7 @@ with tab2:
             for i, q in enumerate(quiz.get("mcq", [])):
                 is_correct = mcq_answers[i] == q["correct_answer"]
                 icon = "CORRECT" if is_correct else "WRONG"
-                st.markdown(f"**[{icon}] Q{i+1}:** {q['explanation']}")
+                st.markdown(f"**[{icon}] Q{i+1}:** {q.get('explanation', 'No explanation provided.')}")
 
 # ---------------- TAB 3: ANALYTICS ----------------
 with tab3:
@@ -290,3 +301,57 @@ with tab3:
         else:
             for rec in recs:
                 st.warning(f"**{rec['topic_id']}** (mastery: {rec['mastery']:.2f}) -- {rec['recommendation']}")
+
+# ---------------- TAB 4: MY LIBRARY ----------------
+with tab4:
+    st.subheader("Your uploaded materials")
+
+    pdf_dir = os.path.join(project_root, "data", "raw_pdfs")
+    media_dir = os.path.join(project_root, "data", "raw_media")
+    ppt_dir = os.path.join(project_root, "data", "raw_ppts")
+
+    # --- PDFs ---
+    st.markdown("### 📄 PDFs")
+    pdf_files = sorted(os.listdir(pdf_dir)) if os.path.exists(pdf_dir) else []
+    if not pdf_files:
+        st.caption("No PDFs uploaded yet.")
+    for fname in pdf_files:
+        fpath = os.path.join(pdf_dir, fname)
+        with st.expander(fname):
+            col1, col2 = st.columns([1, 1])
+            with col1:
+                if st.button("Preview Page 1", key=f"lib_pdf_preview_{fname}"):
+                    preview_path = render_pdf_page_image(fname, 1)
+                    if preview_path:
+                        st.image(preview_path, caption=f"{fname} -- Page 1")
+                    else:
+                        st.error("Couldn't render a preview for this file.")
+            with col2:
+                with open(fpath, "rb") as f:
+                    st.download_button("Open / Download", f, file_name=fname, key=f"lib_pdf_dl_{fname}")
+
+    st.divider()
+
+    # --- Videos ---
+    st.markdown("### 🎬 Lecture Videos")
+    video_files = sorted(os.listdir(media_dir)) if os.path.exists(media_dir) else []
+    if not video_files:
+        st.caption("No videos uploaded yet.")
+    for fname in video_files:
+        fpath = os.path.join(media_dir, fname)
+        with st.expander(fname):
+            st.video(fpath)
+
+    st.divider()
+
+    # --- PPTs ---
+    st.markdown("### 📊 Slide Decks")
+    ppt_files = sorted(os.listdir(ppt_dir)) if os.path.exists(ppt_dir) else []
+    if not ppt_files:
+        st.caption("No slide decks uploaded yet.")
+    for fname in ppt_files:
+        fpath = os.path.join(ppt_dir, fname)
+        with st.expander(fname):
+            st.caption("Slide preview isn't supported yet -- download to view in PowerPoint/LibreOffice.")
+            with open(fpath, "rb") as f:
+                st.download_button("Open / Download", f, file_name=fname, key=f"lib_ppt_dl_{fname}")

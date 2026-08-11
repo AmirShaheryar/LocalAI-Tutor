@@ -54,5 +54,150 @@
         "timestamp": "2026-08-10T14:58:53.385219+00:00"
       }
     ]
+  },
+  "object_oriented_programming": {
+    "mastery": 0.7098,
+    "attempts": 1,
+    "correct": 1,
+    "history": [
+      {
+        "correct": true,
+        "time_taken": null,
+        "timestamp": "2026-08-11T06:59:12.697050+00:00"
+      }
+    ]
+  },
+  "machine_learning": {
+    "mastery": 0.1932,
+    "attempts": 1,
+    "correct": 0,
+    "history": [
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-11T06:59:12.735332+00:00"
+      }
+    ]
+  },
+  "algorithms": {
+    "mastery": 0.7098,
+    "attempts": 1,
+    "correct": 1,
+    "history": [
+      {
+        "correct": true,
+        "time_taken": null,
+        "timestamp": "2026-08-11T06:59:12.776890+00:00"
+      }
+    ]
+  },
+  "nlp": {
+    "mastery": 0.1932,
+    "attempts": 1,
+    "correct": 0,
+    "history": [
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-11T06:59:12.837566+00:00"
+      }
+    ]
+  },
+  "computer_vision": {
+    "mastery": 0.1932,
+    "attempts": 1,
+    "correct": 0,
+    "history": [
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-11T06:59:12.895059+00:00"
+      }
+    ]
+  },
+  "jim-hawkins-character": {
+    "mastery": 0.9292,
+    "attempts": 2,
+    "correct": 2,
+    "history": [
+      {
+        "correct": true,
+        "time_taken": null,
+        "timestamp": "2026-08-11T07:32:00.747271+00:00"
+      },
+      {
+        "correct": true,
+        "time_taken": null,
+        "timestamp": "2026-08-11T07:32:28.794463+00:00"
+      }
+    ]
+  },
+  "novel-author": {
+    "mastery": 0.1747,
+    "attempts": 2,
+    "correct": 0,
+    "history": [
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-11T07:32:00.792602+00:00"
+      },
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-11T07:32:28.855053+00:00"
+      }
+    ]
+  },
+  "pirate-character": {
+    "mastery": 0.1747,
+    "attempts": 2,
+    "correct": 0,
+    "history": [
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-11T07:32:00.821860+00:00"
+      },
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-11T07:32:28.900531+00:00"
+      }
+    ]
+  },
+  "novel-title": {
+    "mastery": 0.1747,
+    "attempts": 2,
+    "correct": 0,
+    "history": [
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-11T07:32:00.857940+00:00"
+      },
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-11T07:32:28.949001+00:00"
+      }
+    ]
+  },
+  "jim-hawkins-roommate": {
+    "mastery": 0.1747,
+    "attempts": 2,
+    "correct": 0,
+    "history": [
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-11T07:32:00.904703+00:00"
+      },
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-11T07:32:28.993057+00:00"
+      }
+    ]
   }
 }
