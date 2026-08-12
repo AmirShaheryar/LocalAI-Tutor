@@ -110,13 +110,16 @@ def _validate_quiz_schema(quiz):
 
     return True, None
 
-def generate_quiz(topic_query, num_mcq=3, num_fib=2, num_short=2, max_retries=2):
+def generate_quiz(topic_query, num_mcq=3, num_fib=2, num_short=2, max_retries=2, source_filter=None):
     """
     Full Day 6 pipeline: retrieve relevant course content -> prompt the LLM for a
     structured JSON quiz -> validate -> retry once if broken.
+
+    source_filter: if given, only generates quiz questions from that one
+    uploaded document -- prevents quizzes mixing unrelated indexed content.
     """
     print(f" Retrieving material for topic: {topic_query!r}")
-    chunks = hybrid_retrieve(topic_query)
+    chunks = hybrid_retrieve(topic_query, source_filter=source_filter)
 
     if not chunks:
         print("No relevant material found -- cannot generate a quiz on this topic.")
