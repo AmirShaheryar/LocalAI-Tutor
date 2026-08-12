@@ -52,9 +52,12 @@ def _build_bm25_index():
 
 def vector_search(query, top_k=20, source_filter=None):
     """Semantic search via ChromaDB — finds chunks with similar MEANING.
-    If source_filter is given, only searches chunks from that exact uploaded file."""
-    where_clause = {"source": source_filter} if source_filter else None
-    results = collection.query(query_texts=[query], n_results=top_k, where=where_clause)
+    If source_filter is given, only searches chunks from that one document."""
+    query_kwargs = {"query_texts": [query], "n_results": top_k}
+    if source_filter:
+        query_kwargs["where"] = {"source": source_filter}
+
+    results = collection.query(**query_kwargs)
 
     hits = []
     for doc, meta, doc_id in zip(
@@ -64,34 +67,39 @@ def vector_search(query, top_k=20, source_filter=None):
     return hits
 
 
+def get_indexed_sources():
+    """Returns a sorted list of distinct source filenames currently indexed in
+    ChromaDB (PDFs and video transcripts alike). Used to populate the
+    'scope questions to one document' dropdowns in the UI."""
+    all_data = collection.get(include=["metadatas"])
+    sources = {meta["source"] for meta in all_data["metadatas"] if meta.get("source")}
+    return sorted(sources)
+
+
 def keyword_search(query, top_k=20, source_filter=None):
     """Keyword search via BM25 — finds chunks with matching TERMS.
-    If source_filter is given, only considers chunks from that exact uploaded file."""
+    If source_filter is given, only keeps hits from that one document
+    (the BM25 index itself stays global/cached; filtering happens per-query)."""
     _build_bm25_index()
 
     tokenized_query = _tokenize(query)
     scores = _bm25_index.get_scores(tokenized_query)
 
-    candidate_indices = range(len(scores))
-    if source_filter:
-        candidate_indices = [
-            i for i in candidate_indices
-            if _bm25_corpus_metas[i].get("source") == source_filter
-        ]
-
-    ranked_indices = sorted(
-        candidate_indices, key=lambda i: scores[i], reverse=True
-    )[:top_k]
+    ranked_indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)
 
     hits = []
     for i in ranked_indices:
         if scores[i] <= 0:
             continue  # no keyword overlap at all -- not a real match
+        if source_filter and _bm25_corpus_metas[i].get("source") != source_filter:
+            continue
         hits.append({
             "id": _bm25_corpus_ids[i],
             "text": _bm25_corpus_docs[i],
             "metadata": _bm25_corpus_metas[i],
         })
+        if len(hits) >= top_k:
+            break
     return hits
 
 def reciprocal_rank_fusion(vector_hits, keyword_hits, k=60, top_n=20):
@@ -153,23 +161,18 @@ def rerank(query, candidates, top_k=5):
         results.append(hit_with_score)
     return results
 
-def get_indexed_sources():
-    """Returns the list of distinct source filenames currently indexed --
-    used by the UI to build a 'which document?' dropdown."""
-    all_data = collection.get(include=["metadatas"])
-    sources = {meta.get("source") for meta in all_data["metadatas"] if meta.get("source")}
-    return sorted(sources)
-
-
 def hybrid_retrieve(query, vector_k=20, keyword_k=20, fusion_k=20, final_k=5, source_filter=None):
     """
     Full Day 4 pipeline: vector search + keyword search -> RRF fusion
     -> cross-encoder rerank -> top final_k context chunks.
 
-    source_filter: if given (e.g. "Shaheryar_Amir_CV.pdf"), retrieval is
-    scoped to ONLY that uploaded document -- prevents topic drift where
-    an unrelated indexed file leaks into results (e.g. asking about your
-    CV and getting pirate-novel chunks back because both happen to be indexed).
+    If source_filter is given (a filename from get_indexed_sources()), only
+    that document's chunks are searched -- keeps answers/quizzes from mixing
+    content across unrelated uploaded files.
+
+    This is the function described in the Day 4 deliverable:
+    "a retrieval function that takes a query and returns the top 5
+    most relevant context chunks."
     """
     vector_hits = vector_search(query, top_k=vector_k, source_filter=source_filter)
     keyword_hits = keyword_search(query, top_k=keyword_k, source_filter=source_filter)
@@ -193,3 +196,5 @@ if __name__ == "__main__":
         location = meta.get("page", meta.get("start"))
         print(f"{i}. [{meta['type']} @ {location}] score={chunk['rerank_score']:.3f}")
         print(f"   {chunk['text'][:150]}...\n")
+
+        
