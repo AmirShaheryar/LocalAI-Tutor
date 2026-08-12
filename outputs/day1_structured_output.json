@@ -1,774 +1,936 @@
 {
-  "document": "Shaheryar_Amir_CV (7).pdf",
-  "total_pages": 2,
+  "document": "Course outline DL.pdf",
+  "total_pages": 3,
   "pages": [
     {
       "page_number": 1,
       "content_blocks": [
         {
           "type": "text",
-          "content": "SHAHERYAR AMIR",
-          "font": "Calibri-Bold",
-          "size": 20.1,
+          "content": "NCEAC.FORM.001.D",
+          "font": "ArialMT",
+          "size": 8.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "AI/ML Engineer",
-          "font": "Calibri-Bold",
-          "size": 11.1,
+          "content": "1",
+          "font": "TimesNewRomanPSMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "|",
-          "font": "Calibri-Bold",
-          "size": 11.1,
+          "content": "NCEAC.FORM.001-D",
+          "font": "LucidaConsole",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Software Developer",
-          "font": "Calibri-Bold",
-          "size": 11.1,
+          "content": "National Computing Education Accreditation Council",
+          "font": "Arial-BoldMT",
+          "size": 12.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "|",
-          "font": "Calibri-Bold",
-          "size": 11.1,
+          "content": "NCEAC",
+          "font": "ArialMT",
+          "size": 12.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Computer Science Student",
-          "font": "Calibri-Bold",
-          "size": 11.1,
+          "content": "COURSE DESCRIPTION FORM",
+          "font": "Arial-BoldMT",
+          "size": 12.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Lahore, Pakistan",
-          "font": "Calibri",
-          "size": 9.0,
+          "content": "INSTITUTION",
+          "font": "Arial-BoldMT",
+          "size": 12.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "|",
-          "font": "Calibri",
-          "size": 9.0,
+          "content": "FAST – National University",
+          "font": "ArialMT",
+          "size": 12.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "+92 334 8067754",
-          "font": "Calibri",
-          "size": 9.0,
+          "content": "PROGRAM (S) TO",
+          "font": "Arial-BoldMT",
+          "size": 12.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "|",
-          "font": "Calibri",
-          "size": 9.0,
+          "content": "BE",
+          "font": "Arial-BoldMT",
+          "size": 12.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "shaheryaraamir@gmail.com",
-          "font": "Calibri",
-          "size": 9.0,
+          "content": "EVALUATED",
+          "font": "Arial-BoldMT",
+          "size": 12.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "|",
-          "font": "Calibri",
-          "size": 9.0,
+          "content": "A. Course Description",
+          "font": "Arial-BoldMT",
+          "size": 12.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "github.com/AmirShaheryar",
-          "font": "Calibri",
-          "size": 9.0,
+          "content": "(Fill out the following table for each course in your computer science curriculum. A filled out form should",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "|",
-          "font": "Calibri",
-          "size": 9.0,
+          "content": "not be more than 2-3 pages.)",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "linkedin.com/in/shaheryar-amir-139a88315",
-          "font": "Calibri",
-          "size": 9.0,
+          "content": "Course Code",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "PROFESSIONAL SUMMARY",
-          "font": "Calibri-Bold",
-          "size": 10.4,
+          "content": "CS5102",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Computer Science student at FAST-NUCES with hands-on experience building and deploying machine learning and NLP systems across two",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "Course Title",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "industry internships. Skilled in supervised learning, feature engineering, anomaly detection, retrieval-augmented generation (RAG), and full-stack",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "Deep Learning",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "development in Python and C++, with a track record of translating technical results into clear insights for technical and non-technical audiences",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "Credit Hours",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "alike.",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "3",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "EXPERIENCE",
-          "font": "Calibri-Bold",
-          "size": 10.4,
+          "content": "Prerequisites by Course(s) and",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "AI / ML Intern",
-          "font": "Calibri-Bold",
-          "size": 9.9,
+          "content": "Topics",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "|",
-          "font": "Calibri",
-          "size": 9.9,
+          "content": "Undergraduate machine learning or artificial intelligence",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Elevvo Pathways",
-          "font": "Calibri",
-          "size": 9.9,
+          "content": "Undergraduate programming/Python",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Jun – Jul 2025",
-          "font": "Calibri-Italic",
-          "size": 9.5,
+          "content": "Assessment Instruments with",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
+          "content": "Weights",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Trained, tuned, and evaluated supervised machine learning models (scikit-learn, pandas) on real-world datasets, covering the full model",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "(homework, quizzes,",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "development lifecycle from preprocessing to evaluation.",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "midterms, final, programming",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Designed and implemented feature engineering pipelines and anomaly detection algorithms, improving model accuracy and robustness on",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "noisy production-style data.",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "assignments, lab work, etc.)",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
           "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Presented analytical findings and model behavior to cross-functional stakeholders, translating technical results into actionable, non-technical",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "insights.",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Web Development Intern",
-          "font": "Calibri-Bold",
-          "size": 9.9,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "|",
-          "font": "Calibri",
-          "size": 9.9,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Digital Empowerment Network",
-          "font": "Calibri",
-          "size": 9.9,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Jul – Sep 2025",
-          "font": "Calibri-Italic",
-          "size": 9.5,
+          "content": "1 Mid-term exam: 15% each",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
           "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Built and improved full-stack web projects during a remote internship, applying front-end and back-end development practices.",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Delivered consistent, high-quality contributions across assigned development tasks, demonstrating proactive ownership and reliability.",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "(Intern ID: STU-WD-251-813)",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "PROJECTS",
-          "font": "Calibri-Bold",
-          "size": 10.4,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Medora Health App",
-          "font": "Calibri-Bold",
-          "size": 9.9,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "—",
-          "font": "Calibri-Italic",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Python, NLP, RAG, scikit-learn",
-          "font": "Calibri-Italic",
-          "size": 9.5,
+          "content": "Final exam: 40%",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
           "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Designed an AI-driven healthcare platform enabling patients to log symptoms, receive NLP-based preliminary health assessments, book",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "3 Projects: 30%",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "appointments, and manage personalized medicine reminders.",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "Course Coordinator",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
+          "content": "URL (if any)",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Architected a multi-role system (User/Doctor/Admin) with role-based access, a doctor-verification workflow for AI predictions, and a",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "piazza.com/nu.edu.pk/fall2018/cs5102/home",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "retrieval-augmented QA layer grounded in verified medical sources.",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "Current Catalog Description",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
+          "content": "Textbook",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Incorporated NLP-based medical report simplification and symptom-to-disease mapping using a structured medical knowledge base.",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "(or",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "AI-Powered Multimodal Study Assistant (RAG Pipeline) — In Progress",
-          "font": "Calibri-Bold",
-          "size": 9.9,
+          "content": "Laboratory Manual",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "—",
-          "font": "Calibri-Italic",
-          "size": 9.5,
+          "content": "for Laboratory Courses)",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Python, Ollama, ChromaDB, Hugging Face, Whisper",
-          "font": "Calibri-Italic",
-          "size": 9.5,
+          "content": "- Deep Learning by Ian Goodfellow, Yoshua Bengio",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
+          "content": "- Stanford deep learning for visual recognition",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Building an end-to-end local RAG system that ingests PDFs, lecture videos, and images, indexing them in ChromaDB with multimodal",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "http://cs231n.stanford.edu/2017/syllabus.html",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "embeddings (MiniLM, CLIP).",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "Reference Material",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
+          "content": "- Neural Networks and Deep Learning by Michael Nielsen (Dec 2014).",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Implementing hybrid retrieval (vector search + BM25) with cross-encoder reranking to boost precision, paired with a local LLM (Ollama) for",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "- Pattern Recognition and Machine Learning, Christopher M Bishop,",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "citation-grounded answer generation.",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "Springer 2006.",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
+          "content": "- Deep learning for medical imaging @ Purdue",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Developing an adaptive learning layer tracking quiz performance and computing per-topic mastery scores to recommend targeted review",
-          "font": "Calibri",
-          "size": 9.5,
+          "content": "https://docs.google.com/document/d/1zEL-nu_To7Olc3cD-",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "material.",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "FraudX",
-          "font": "Calibri-Bold",
-          "size": 9.9,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "—",
-          "font": "Calibri-Italic",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Python, scikit-learn, Anomaly Detection",
-          "font": "Calibri-Italic",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Built a real-time transaction monitoring system using ML-based anomaly detection to flag suspicious activity.",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Developed a live risk dashboard with automated alerts to support fraud analysts in reviewing flagged transactions.",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "SpaceShooter",
-          "font": "Calibri-Bold",
-          "size": 9.9,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "—",
-          "font": "Calibri-Italic",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "C++, SFML",
-          "font": "Calibri-Italic",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Developed a 2D space shooter game featuring real-time collision detection, an enemy AI state machine, dynamic difficulty scaling, and a",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "persistent high-score system.",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "SocialMediaApp",
-          "font": "Calibri-Bold",
-          "size": 9.9,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "—",
-          "font": "Calibri-Italic",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "C++, OOP",
-          "font": "Calibri-Italic",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Built a console-based social network simulation with user profiles, bidirectional friend graphs, post creation, and a personalized news feed.",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "TECHNICAL SKILLS",
-          "font": "Calibri-Bold",
-          "size": 10.4,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Languages:",
-          "font": "Calibri-Bold",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Python, C++, x86 Assembly",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "AI / ML:",
-          "font": "Calibri-Bold",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Machine Learning, NLP, RAG, Anomaly Detection, Feature Engineering, Model Evaluation, LLMs (Ollama, Hugging Face)",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Tools & Libraries:",
-          "font": "Calibri-Bold",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "scikit-learn, pandas, ChromaDB, Whisper, Git, Jupyter, SFML",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Concepts:",
-          "font": "Calibri-Bold",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Object-Oriented Programming, Data Structures & Algorithms, Software Architecture",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Soft Skills:",
-          "font": "Calibri-Bold",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Problem Solving, Technical Communication, Team Collaboration, Analytical Thinking, Research & Presentation",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "EDUCATION",
-          "font": "Calibri-Bold",
-          "size": 10.4,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "BS Computer Science",
-          "font": "Calibri-Bold",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "|",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "FAST-NUCES, Lahore — National University of Computer & Emerging Sciences",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "|",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "2023 – Present",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Intermediate — FSc Pre-Engineering",
-          "font": "Calibri-Bold",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "|",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "Punjab Group of Colleges, Lahore",
-          "font": "Calibri",
-          "size": 9.5,
-          "is_latex": false
-        },
-        {
-          "type": "text",
-          "content": "LEADERSHIP & INVOLVEMENT",
-          "font": "Calibri-Bold",
-          "size": 10.4,
+          "content": "dg5iADvWrErAQSJD8n-1CLrGGA/edit#heading=h.ml4r2vcdki0v",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         }
       ],
-      "extracted_images": []
+      "extracted_images": [
+        "data/extracted_images\\page_1_img_1.png",
+        "data/extracted_images\\page_1_img_2.png"
+      ]
     },
     {
       "page_number": 2,
       "content_blocks": [
         {
           "type": "text",
-          "content": "•",
-          "font": "Calibri",
-          "size": 10.4,
+          "content": "NCEAC.FORM.001.D",
+          "font": "ArialMT",
+          "size": 8.0,
           "is_latex": false
         },
         {
           "type": "text",
-          "content": "Officer, Softec PC — Organized and coordinated activities for FAST-NUCES's flagship annual software exhibition.",
+          "content": "2",
+          "font": "TimesNewRomanPSMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "NCEAC.FORM.001-D",
+          "font": "LucidaConsole",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "National Computing Education Accreditation Council",
+          "font": "Arial-BoldMT",
+          "size": 12.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "NCEAC",
+          "font": "ArialMT",
+          "size": 12.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Course Goals",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "–",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Understand the fundamentals of neural networks",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "–",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Understand deep learning with CNNs",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "–",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Apply deep learning to real problems, especially in the context",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "of vision and language processing",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Topics Covered in the Course,",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "with Number of Lectures on Each",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Topic",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "(assume 15-week instruction",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "and one-hour lectures)",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Learning overview:",
+          "font": "Calibri-Bold",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Introduction and motivation, biological neural network and its",
           "font": "Calibri",
-          "size": 9.5,
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "history, learning vs programming, learning components,",
+          "font": "Calibri",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "supervised learning, classification vs regression",
+          "font": "Calibri",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Basics of Neural Networks:",
+          "font": "Calibri-Bold",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Perceptron, Multilayer Perceptron, Gradient Descent in MLPs,",
+          "font": "Calibri",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Activation functions, Back-propagation",
+          "font": "Calibri",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Convolutional Neural Networks:",
+          "font": "Calibri-Bold",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Motivation for CNNs, basics of convolution, distinguishing",
+          "font": "Calibri",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "features of CNNs, What makes CNNs tick, deep learning with",
+          "font": "Calibri",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "CNNs",
+          "font": "Calibri",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Deep learning - Applications:",
+          "font": "Calibri-Bold",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Applying CNNs: transfer learning, CNNs in computer vision,",
+          "font": "Calibri",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Recurrent NNs, Inception and GoogleNet, LSTMs and deep",
+          "font": "Calibri",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "learning for NLP, Generative Adversarial Networks",
+          "font": "Calibri",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Practical issues: Overview of Python, GPU, Cloud-based GPU",
+          "font": "Calibri",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "solutions, useful libraries",
+          "font": "Calibri",
+          "size": 11.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Laboratory Projects/Experiments",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Done in the Course",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Project 1:",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Implementation of NN backpropagation(MATLAB)",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Project 2:",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Implementation of a CNN(cats vs dogs problem) in Keras",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Training, testing and visualization",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Hyperparameter tuning: optimizer, layers, parameters etc",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Project 3:",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Implementation/modification of DL model for:",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "a)",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "GAN for generating skin cancer data",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "or",
+          "font": "Arial-ItalicMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "b)",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "LSTM model for describing the scene of a movie",
+          "font": "ArialMT",
+          "size": 10.0,
           "is_latex": false
         }
       ],
-      "extracted_images": []
+      "extracted_images": [
+        "data/extracted_images\\page_2_img_1.png",
+        "data/extracted_images\\page_2_img_2.png"
+      ]
+    },
+    {
+      "page_number": 3,
+      "content_blocks": [
+        {
+          "type": "text",
+          "content": "NCEAC.FORM.001.D",
+          "font": "ArialMT",
+          "size": 8.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "3",
+          "font": "TimesNewRomanPSMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "NCEAC.FORM.001-D",
+          "font": "LucidaConsole",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "National Computing Education Accreditation Council",
+          "font": "Arial-BoldMT",
+          "size": 12.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "NCEAC",
+          "font": "ArialMT",
+          "size": 12.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Class Time Spent on",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "(in credit",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "hours)",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Theory",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Problem",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Analysis",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Solution",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Design",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Social and Ethical",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Issues",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "0.9",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "0.9",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "0.9",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "0.3",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Oral and Written Communications",
+          "font": "Arial-BoldMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Every student is required to submit at least 3 written reports of",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "typically 5-10 pages.  These reports are NOT graded for oral and",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "verbal proficiency beyond what is expected of a technical report.",
+          "font": "ArialMT",
+          "size": 10.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Instructor Name   M Usman Sadiq",
+          "font": "TimesNewRomanPS-BoldMT",
+          "size": 12.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Instructor Signature ____________________________",
+          "font": "TimesNewRomanPS-BoldMT",
+          "size": 12.0,
+          "is_latex": false
+        },
+        {
+          "type": "text",
+          "content": "Date ____________________________",
+          "font": "TimesNewRomanPS-BoldMT",
+          "size": 12.0,
+          "is_latex": false
+        }
+      ],
+      "extracted_images": [
+        "data/extracted_images\\page_3_img_1.png",
+        "data/extracted_images\\page_3_img_2.png"
+      ]
     }
   ]
 }

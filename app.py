@@ -15,7 +15,7 @@ if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
 from src.synthesis.rag_engine import build_context_block, format_timestamp, SYSTEM_PROMPT, OLLAMA_MODEL
-from src.retrieval.hybrid_retriever import hybrid_retrieve
+from src.retrieval.hybrid_retriever import hybrid_retrieve, get_indexed_sources
 import src.retrieval.hybrid_retriever as hybrid_retriever_module
 from src.quiz.quiz_generator import generate_quiz
 from src.tracing.knowledge_tracer import grade_quiz, get_all_mastery, recommend_review
@@ -146,6 +146,14 @@ with tab1:
     st.divider()
     st.subheader("Ask a question about your course material")
 
+    all_sources = get_indexed_sources()
+    scope_options = ["All uploaded material"] + all_sources
+    selected_scope = st.selectbox(
+        "Scope questions to:", scope_options,
+        help="Choose one document to avoid answers mixing content from unrelated files."
+    )
+    active_source_filter = None if selected_scope == "All uploaded material" else selected_scope
+
     for role, message in st.session_state.chat_history:
         with st.chat_message(role):
             st.markdown(message)
@@ -159,7 +167,7 @@ with tab1:
 
         with st.chat_message("assistant"):
             with st.spinner("Searching database and reranking context..."):
-                chunks = hybrid_retrieve(user_question)
+                chunks = hybrid_retrieve(user_question, source_filter=active_source_filter)
 
             if not chunks:
                 answer = "I don't have enough information in the provided materials to answer that."
@@ -235,11 +243,19 @@ Answer the question using only the CONTEXT above, citing every claim."""
 with tab2:
     st.subheader("Generate a practice quiz")
 
+    quiz_scope_options = ["All uploaded material"] + get_indexed_sources()
+    selected_quiz_scope = st.selectbox(
+        "Generate quiz from:", quiz_scope_options,
+        help="Choose one document so quiz questions don't mix unrelated files.",
+        key="quiz_scope_select"
+    )
+    quiz_source_filter = None if selected_quiz_scope == "All uploaded material" else selected_quiz_scope
+
     topic_input = st.text_input("Topic to quiz yourself on:")
 
     if st.button("Generate Quiz"):
         with st.spinner("Reranking context..."):
-            quiz = generate_quiz(topic_input)
+            quiz = generate_quiz(topic_input, source_filter=quiz_source_filter)
         if quiz:
             st.session_state.current_quiz = quiz
             st.session_state.quiz_submitted = False
