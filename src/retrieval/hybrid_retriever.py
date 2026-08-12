@@ -50,9 +50,11 @@ def _build_bm25_index():
 
     print(f" BM25 index ready with {len(_bm25_corpus_docs)} chunks.")
 
-def vector_search(query, top_k=20):
-    """Semantic search via ChromaDB — finds chunks with similar MEANING."""
-    results = collection.query(query_texts=[query], n_results=top_k)
+def vector_search(query, top_k=20, source_filter=None):
+    """Semantic search via ChromaDB — finds chunks with similar MEANING.
+    If source_filter is given, only searches chunks from that exact uploaded file."""
+    where_clause = {"source": source_filter} if source_filter else None
+    results = collection.query(query_texts=[query], n_results=top_k, where=where_clause)
 
     hits = []
     for doc, meta, doc_id in zip(
@@ -62,15 +64,23 @@ def vector_search(query, top_k=20):
     return hits
 
 
-def keyword_search(query, top_k=20):
-    """Keyword search via BM25 — finds chunks with matching TERMS."""
+def keyword_search(query, top_k=20, source_filter=None):
+    """Keyword search via BM25 — finds chunks with matching TERMS.
+    If source_filter is given, only considers chunks from that exact uploaded file."""
     _build_bm25_index()
 
     tokenized_query = _tokenize(query)
     scores = _bm25_index.get_scores(tokenized_query)
 
+    candidate_indices = range(len(scores))
+    if source_filter:
+        candidate_indices = [
+            i for i in candidate_indices
+            if _bm25_corpus_metas[i].get("source") == source_filter
+        ]
+
     ranked_indices = sorted(
-        range(len(scores)), key=lambda i: scores[i], reverse=True
+        candidate_indices, key=lambda i: scores[i], reverse=True
     )[:top_k]
 
     hits = []
@@ -143,17 +153,26 @@ def rerank(query, candidates, top_k=5):
         results.append(hit_with_score)
     return results
 
-def hybrid_retrieve(query, vector_k=20, keyword_k=20, fusion_k=20, final_k=5):
+def get_indexed_sources():
+    """Returns the list of distinct source filenames currently indexed --
+    used by the UI to build a 'which document?' dropdown."""
+    all_data = collection.get(include=["metadatas"])
+    sources = {meta.get("source") for meta in all_data["metadatas"] if meta.get("source")}
+    return sorted(sources)
+
+
+def hybrid_retrieve(query, vector_k=20, keyword_k=20, fusion_k=20, final_k=5, source_filter=None):
     """
     Full Day 4 pipeline: vector search + keyword search -> RRF fusion
     -> cross-encoder rerank -> top final_k context chunks.
 
-    This is the function described in the Day 4 deliverable:
-    "a retrieval function that takes a query and returns the top 5
-    most relevant context chunks."
+    source_filter: if given (e.g. "Shaheryar_Amir_CV.pdf"), retrieval is
+    scoped to ONLY that uploaded document -- prevents topic drift where
+    an unrelated indexed file leaks into results (e.g. asking about your
+    CV and getting pirate-novel chunks back because both happen to be indexed).
     """
-    vector_hits = vector_search(query, top_k=vector_k)
-    keyword_hits = keyword_search(query, top_k=keyword_k)
+    vector_hits = vector_search(query, top_k=vector_k, source_filter=source_filter)
+    keyword_hits = keyword_search(query, top_k=keyword_k, source_filter=source_filter)
 
     fused_candidates = reciprocal_rank_fusion(
         vector_hits, keyword_hits, top_n=fusion_k
@@ -174,5 +193,3 @@ if __name__ == "__main__":
         location = meta.get("page", meta.get("start"))
         print(f"{i}. [{meta['type']} @ {location}] score={chunk['rerank_score']:.3f}")
         print(f"   {chunk['text'][:150]}...\n")
-
-        
