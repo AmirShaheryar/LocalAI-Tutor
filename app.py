@@ -259,6 +259,11 @@ with tab2:
         if quiz:
             st.session_state.current_quiz = quiz
             st.session_state.quiz_submitted = False
+            st.success(
+                f"Quiz ready: {len(quiz.get('mcq', []))} MCQ, "
+                f"{len(quiz.get('fill_in_blank', []))} fill-in-blank, "
+                f"{len(quiz.get('short_answer', []))} short-answer."
+            )
         else:
             st.error("Couldn't generate a quiz -- try a topic covered in your material.")
 

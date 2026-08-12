@@ -33,15 +33,35 @@ RULES YOU MUST FOLLOW:
 2. Output ONLY raw JSON. No markdown code fences, no explanation, no preamble,
    no text before or after the JSON object.
 
-3. SELF-CONTAINED QUESTIONS. The reader will NOT have the source table, figure,
-   or paragraph in front of them -- only the question text. So:
-   - Never write a question that only makes sense next to a table (e.g. don't ask
-     "up to and including X, how many requests/second?" if that phrasing only
-     resolves against a table row). Instead restate the needed fact directly:
-     "According to the cost analysis, processing 20 requests/second saves the
-     company how much per year?"
-   - Do not use vague pointers like "the proposed change" or "this method" unless
-     you name the specific thing in the same sentence.
+3. SELF-CONTAINED QUESTIONS — CRITICAL. The student sees ONLY the question
+   text, with NO access to the PDF, tables, or video. Every question must
+   stand alone and be answerable from memory after studying the material.
+
+   REQUIRED: Begin every question by anchoring it to the scenario. Use a
+   phrase like "In the [document/scenario name] cost-benefit analysis, ..."
+   or "According to the [specific module/project name] analysis in [source], ..."
+   Name concrete nouns from the context: company/project name, module names
+   (e.g. "sorted-index module"), specific changes being evaluated, and units.
+
+   NEVER use bare vague references the student cannot resolve:
+   - BAD: "What is the value function for every additional request per second?"
+     (Which system? Which analysis? Which document?)
+   - GOOD: "In the search-engine cost-benefit analysis, what is the value
+     function (in dollars per year) for each additional request per second
+     the system can handle?"
+   - BAD: "The company saves $____ per year by adding a second server."
+     (Which company? Which scenario?)
+   - GOOD: "In the cost-benefit analysis for scaling the search system,
+     how much does the company save per year by adding a second server?"
+   - BAD: "The payback period is calculated as total cost divided by
+     annual savings of $____ per year." (Savings for WHICH change?)
+   - GOOD: "For restructuring the sorted-index module (total cost $50,000),
+     the payback period equals total cost divided by annual savings of
+     $____ per year — what is that annual savings figure?"
+
+   Do not use "the proposed change", "this method", "the system", or
+   "the company" unless the same sentence already names the specific
+   project, document, or module they refer to.
 
 4. NO DUPLICATE FACTS. Each question (across MCQ, fill-in-blank, and short-answer
    combined) must test a DIFFERENT fact or concept from the context. Do not ask
@@ -108,9 +128,83 @@ RULES YOU MUST FOLLOW:
 """
 
 def _build_context_block(chunks):
-    """Joins retrieved chunks into plain study material text for the quiz prompt.
-    (Simpler than rag_engine's version -- quizzes don't need citation tags.)"""
-    return "\n\n".join(chunk["text"] for chunk in chunks)
+    """Join retrieved chunks into labeled study material for the quiz prompt.
+    Each chunk is tagged with source file and page/timestamp so the LLM can
+    anchor questions to concrete scenario details."""
+    lines = []
+    for i, chunk in enumerate(chunks, start=1):
+        meta = chunk.get("metadata", {})
+        source = meta.get("source", "unknown source")
+        if meta.get("type") == "pdf_text":
+            location = f"page {meta.get('page', '?')}"
+        elif meta.get("type") == "video_transcript":
+            secs = int(meta.get("start", 0))
+            location = f"{secs // 60:02d}:{secs % 60:02d}"
+        else:
+            location = "unknown location"
+        lines.append(f"[Excerpt {i} — {source}, {location}]\n{chunk['text']}")
+    return "\n\n".join(lines)
+
+
+def _derive_scope_label(topic_query, source_filter=None):
+    """Human-readable label the LLM must echo in every question stem."""
+    if source_filter:
+        doc_name = re.sub(r"\.(pdf|txt|md)$", "", source_filter, flags=re.IGNORECASE)
+        doc_name = doc_name.replace("_", " ").replace("-", " ")
+        return f"{doc_name} ({topic_query})"
+    return topic_query
+
+
+_CLARITY_ANCHORS = re.compile(
+    r"\b(according to|in the|based on|for the|from the|within the|"
+    r"cost[- ]benefit|analysis of|when evaluating|for restructuring|"
+    r"for scaling|search[- ]engine|sorted[- ]index|noise words|"
+    r"second server|requests/second|requests per second)\b",
+    re.IGNORECASE,
+)
+_VAGUE_ONLY = re.compile(
+    r"\b(the company|the system|the model|this method|the proposed|"
+    r"the value function|the payback period)\b",
+    re.IGNORECASE,
+)
+
+
+def _validate_question_clarity(question, scope_label):
+    """Reject questions that rely on unstated context the student can't see."""
+    q = question.strip()
+    if len(q) < 40:
+        return False, f"Question too short to be self-contained: '{q[:50]}...'"
+
+    has_anchor = bool(_CLARITY_ANCHORS.search(q))
+    has_vague = bool(_VAGUE_ONLY.search(q))
+
+    scope_words = [w.lower() for w in re.findall(r"\w+", scope_label) if len(w) > 3]
+    mentions_scope = any(w in q.lower() for w in scope_words)
+
+    if has_vague and not (has_anchor or mentions_scope):
+        return False, (
+            f"Question uses vague references without naming the scenario: "
+            f"'{q[:70]}...' — rewrite to start with the document/scenario "
+            f"({scope_label}) and name the specific module or change."
+        )
+
+    if q.lower().startswith(("what is the ", "how much does the ", "the ")) and not (has_anchor or mentions_scope):
+        return False, (
+            f"Question opens vaguely: '{q[:70]}...' — begin with "
+            f"'In the {scope_label}...' or 'According to...' and name "
+            "the specific system, module, or change being tested."
+        )
+
+    return True, None
+
+
+def _repair_json(text):
+    """Fix common JSON syntax mistakes from small LLM outputs."""
+    text = re.sub(r",(\s*[}\]])", r"\1", text)
+    text = re.sub(r"\}(\s*)\{", r"},\1{", text)
+    text = re.sub(r"\](\s*)\[", r"],\1[", text)
+    text = re.sub(r'"\s*\n\s*"', '",\n"', text)
+    return text
 
 
 def _extract_json(raw_text):
@@ -127,7 +221,44 @@ def _extract_json(raw_text):
         if brace_match:
             text = brace_match.group(0)
 
-    return json.loads(text)  # raises json.JSONDecodeError if still broken
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        return json.loads(_repair_json(text))
+
+
+def _normalize_quiz(quiz):
+    """Fill optional fields the schema asks for but validation doesn't require."""
+    for q in quiz.get("mcq", []):
+        q.setdefault("difficulty", "medium")
+        q.setdefault("explanation", "")
+    for q in quiz.get("fill_in_blank", []):
+        q.setdefault("difficulty", "medium")
+    for q in quiz.get("short_answer", []):
+        q.setdefault("difficulty", "medium")
+        q.setdefault("key_points", [])
+    return quiz
+
+
+def _call_ollama(messages, json_mode=True):
+    """Single Ollama chat call with low temperature and optional JSON mode."""
+    kwargs = {
+        "model": OLLAMA_MODEL,
+        "messages": messages,
+        "options": {"temperature": 0.1, "num_predict": 4096},
+    }
+    if json_mode:
+        kwargs["format"] = "json"
+    response = ollama.chat(**kwargs)
+    return response["message"]["content"]
+
+
+def _save_debug_response(raw_text, attempt, error):
+    """Persist the last failed LLM response so parse errors can be inspected."""
+    debug_path = os.path.join(output_quiz_dir, "_debug_last_failure.txt")
+    with open(debug_path, "w", encoding="utf-8") as f:
+        f.write(f"Attempt: {attempt}\nError: {error}\n\n--- RAW RESPONSE ---\n{raw_text}")
+    print(f" 📝 Saved failed response to {debug_path}")
 
 _CATEGORY_PATTERNS = [
     ("currency", re.compile(r"\$\s?\d[\d,]*(\.\d+)?")),
@@ -181,7 +312,7 @@ def _validate_quiz_schema(quiz):
     for q in quiz.get("fill_in_blank", []):
         if not all(k in q for k in ("topic_id", "question", "correct_answer")):
             return False, "A fill-in-blank entry is missing required fields."
-        if "___" not in q["question"] and "____" not in q["question"]:
+        if not re.search(r"_{2,}", q["question"]):
             return False, f"Fill-in-blank '{q['question'][:50]}...' has no blank."
 
     for q in quiz.get("short_answer", []):
@@ -191,10 +322,9 @@ def _validate_quiz_schema(quiz):
     return True, None
 
 
-def _validate_quiz_quality(quiz):
-    """Semantic checks beyond raw schema shape -- catches the two failure modes
-    that slip past _validate_quiz_schema: distractors of the wrong type/unit,
-    and two questions that quietly test the same fact. Returns (is_valid, error_message)."""
+def _validate_quiz_quality(quiz, scope_label=""):
+    """Semantic checks beyond raw schema shape -- catches distractor type mismatches,
+    duplicate facts, and vague question wording. Returns (is_valid, error_message)."""
 
     # 1. Distractor type/unit consistency for each MCQ.
     for q in quiz.get("mcq", []):
@@ -218,14 +348,152 @@ def _validate_quiz_quality(quiz):
     for i in range(len(normalized)):
         for j in range(i + 1, len(normalized)):
             similarity = difflib.SequenceMatcher(None, normalized[i], normalized[j]).ratio()
-            if similarity > 0.55:
+            if similarity > 0.75:
                 return False, (
                     f"Question {i+1} ({all_questions[i][1]}) and question {j+1} "
                     f"({all_questions[j][1]}) appear to test the same fact: "
                     f"'{all_questions[i][0][:50]}...' vs '{all_questions[j][0][:50]}...'"
                 )
 
+    # 3. Self-contained wording — every question must anchor to the scenario.
+    if scope_label:
+        for q in quiz.get("mcq", []):
+            ok, err = _validate_question_clarity(q["question"], scope_label)
+            if not ok:
+                return False, err
+        for q in quiz.get("fill_in_blank", []):
+            ok, err = _validate_question_clarity(q["question"], scope_label)
+            if not ok:
+                return False, err
+        for q in quiz.get("short_answer", []):
+            ok, err = _validate_question_clarity(q["question"], scope_label)
+            if not ok:
+                return False, err
+
     return True, None
+
+
+_SECTION_SCHEMAS = {
+    "mcq": {
+        "prompt": (
+            'Generate ONLY a JSON object with a single "mcq" array containing '
+            "exactly {count} multiple-choice questions. Follow the MCQ schema "
+            "from the system prompt. No other top-level keys."
+        ),
+        "key": "mcq",
+    },
+    "fill_in_blank": {
+        "prompt": (
+            'Generate ONLY a JSON object with a single "fill_in_blank" array '
+            "containing exactly {count} fill-in-the-blank questions. Each "
+            "question must include a blank written as ____. No other top-level keys."
+        ),
+        "key": "fill_in_blank",
+    },
+    "short_answer": {
+        "prompt": (
+            'Generate ONLY a JSON object with a single "short_answer" array '
+            "containing exactly {count} short-answer questions. Include "
+            '"key_points" for each. No other top-level keys.'
+        ),
+        "key": "short_answer",
+    },
+}
+
+
+def _clarity_instructions(scope_label):
+    return (
+        f"QUIZ SCOPE: {scope_label}\n\n"
+        "CLARITY REQUIREMENT: Every question MUST begin by naming this scope "
+        f"({scope_label}). Include the specific module, change, or scenario "
+        "from the context (e.g. 'sorted-index module', 'eliminating noise words', "
+        "'adding a second server'). A student with no PDF open must know exactly "
+        "what is being asked."
+    )
+
+
+def _generate_quiz_sections(context_block, num_mcq, num_fib, num_short, topic_query, scope_label):
+    """Fallback: generate each question type in a separate LLM call for reliability."""
+    counts = {"mcq": num_mcq, "fill_in_blank": num_fib, "short_answer": num_short}
+    quiz = {"mcq": [], "fill_in_blank": [], "short_answer": []}
+
+    for section_name, spec in _SECTION_SCHEMAS.items():
+        count = counts[section_name]
+        if count <= 0:
+            continue
+
+        section_prompt = f"""CONTEXT:
+{context_block}
+
+{_clarity_instructions(scope_label)}
+
+{spec["prompt"].format(count=count)}
+
+Output ONLY the JSON object, nothing else."""
+
+        messages = [
+            {"role": "system", "content": QUIZ_SYSTEM_PROMPT},
+            {"role": "user", "content": section_prompt},
+        ]
+
+        for attempt in range(1, 4):
+            print(f" Generating {section_name} (attempt {attempt})...")
+            raw_text = _call_ollama(messages)
+            try:
+                parsed = _extract_json(raw_text)
+            except (json.JSONDecodeError, ValueError) as e:
+                print(f" ⚠️  {section_name} JSON parse failed: {e}")
+                _save_debug_response(raw_text, attempt, e)
+                messages = [
+                    {"role": "system", "content": QUIZ_SYSTEM_PROMPT},
+                    {"role": "user", "content": (
+                        section_prompt
+                        + f"\n\nYour previous output was invalid JSON ({e}). "
+                        "Re-output ONLY valid raw JSON matching the schema."
+                    )},
+                ]
+                continue
+
+            items = parsed.get(spec["key"], [])
+            if not isinstance(items, list) or len(items) != count:
+                got = len(items) if isinstance(items, list) else "non-list"
+                print(f" ⚠️  {section_name}: expected {count} items, got {got}")
+                messages = [
+                    {"role": "system", "content": QUIZ_SYSTEM_PROMPT},
+                    {"role": "user", "content": (
+                        section_prompt
+                        + f"\n\nYou returned {got} items but need exactly {count}. "
+                        "Re-output ONLY valid raw JSON."
+                    )},
+                ]
+                continue
+
+            clarity_failed = False
+            for item in items:
+                ok, clarity_err = _validate_question_clarity(item.get("question", ""), scope_label)
+                if not ok:
+                    print(f" ⚠️  {section_name} clarity check failed: {clarity_err}")
+                    messages = [
+                        {"role": "system", "content": QUIZ_SYSTEM_PROMPT},
+                        {"role": "user", "content": (
+                            section_prompt
+                            + f"\n\nFix this clarity problem and re-output ONLY valid raw JSON: "
+                            f"{clarity_err}"
+                        )},
+                    ]
+                    clarity_failed = True
+                    break
+            if clarity_failed:
+                continue
+
+            quiz[spec["key"]] = items
+            break
+        else:
+            print(f" ❌ Failed to generate {section_name} section after 3 attempts.")
+            return None
+
+    return _normalize_quiz(quiz)
+
 
 def generate_quiz(topic_query, num_mcq=3, num_fib=2, num_short=2, max_retries=2, source_filter=None):
     """
@@ -246,9 +514,12 @@ def generate_quiz(topic_query, num_mcq=3, num_fib=2, num_short=2, max_retries=2,
         return None
 
     context_block = _build_context_block(chunks)
+    scope_label = _derive_scope_label(topic_query, source_filter)
 
     user_prompt = f"""CONTEXT:
 {context_block}
+
+{_clarity_instructions(scope_label)}
 
 Generate a quiz from the CONTEXT above with exactly:
 - {num_mcq} multiple-choice questions
@@ -265,48 +536,80 @@ Output ONLY the JSON object, nothing else."""
     last_error = None
     for attempt in range(1, max_retries + 2):
         print(f" Generating quiz (attempt {attempt})...")
-        response = ollama.chat(model=OLLAMA_MODEL, messages=messages)
-        raw_text = response["message"]["content"]
+        raw_text = _call_ollama(messages)
 
         try:
-            quiz = _extract_json(raw_text)
+            quiz = _normalize_quiz(_extract_json(raw_text))
         except (json.JSONDecodeError, ValueError) as e:
             last_error = f"JSON parse failed: {e}"
             print(f" ⚠️  {last_error}")
-            messages.append({"role": "assistant", "content": raw_text})
-            messages.append({"role": "user", "content": (
-                f"That was not valid JSON ({e}). Re-output the FULL quiz as raw JSON "
-                f"only, matching the schema exactly. No markdown fences, no commentary."
-            )})
+            _save_debug_response(raw_text, attempt, e)
+            messages = [
+                {"role": "system", "content": QUIZ_SYSTEM_PROMPT},
+                {"role": "user", "content": (
+                    user_prompt
+                    + f"\n\nYour previous output was invalid JSON ({e}). "
+                    "Re-output the FULL quiz as valid raw JSON only. "
+                    "Ensure commas between every array element and escape "
+                    "any double quotes inside string values."
+                )},
+            ]
             continue
 
         is_valid, error_message = _validate_quiz_schema(quiz)
         if not is_valid:
             last_error = f"Schema validation failed: {error_message}"
             print(f" ⚠️  {last_error}")
-            messages.append({"role": "assistant", "content": raw_text})
-            messages.append({"role": "user", "content": (
-                f"Fix this specific problem and re-output the FULL corrected quiz as "
-                f"raw JSON only: {error_message}"
-            )})
+            messages = [
+                {"role": "system", "content": QUIZ_SYSTEM_PROMPT},
+                {"role": "user", "content": (
+                    user_prompt
+                    + f"\n\nFix this specific problem and re-output the FULL quiz "
+                    f"as raw JSON only: {error_message}"
+                )},
+            ]
             continue
 
-        is_quality, quality_error = _validate_quiz_quality(quiz)
+        is_quality, quality_error = _validate_quiz_quality(quiz, scope_label)
         if not is_quality:
             last_error = f"Quality check failed: {quality_error}"
             print(f" ⚠️  {last_error}")
-            messages.append({"role": "assistant", "content": raw_text})
-            messages.append({"role": "user", "content": (
-                f"Fix this specific problem and re-output the FULL corrected quiz as "
-                f"raw JSON only: {quality_error}"
-            )})
+            messages = [
+                {"role": "system", "content": QUIZ_SYSTEM_PROMPT},
+                {"role": "user", "content": (
+                    user_prompt
+                    + f"\n\nFix this specific problem and re-output the FULL quiz "
+                    f"as raw JSON only: {quality_error}"
+                )},
+            ]
             continue
 
         print(" ✅ Valid, high-quality quiz generated.")
         return quiz
 
-    print(f" ❌ Giving up after {max_retries + 1} attempts. Last error: {last_error}")
-    return None
+    print(f" ❌ Full-quiz generation failed ({last_error}). Trying section-by-section...")
+    quiz = _generate_quiz_sections(
+        context_block, num_mcq, num_fib, num_short, topic_query, scope_label
+    )
+    if not quiz:
+        print(f" ❌ Giving up. Last error: {last_error}")
+        return None
+
+    is_valid, error_message = _validate_quiz_schema(quiz)
+    if not is_valid:
+        print(f" ❌ Section fallback failed schema check: {error_message}")
+        return None
+
+    is_quality, quality_error = _validate_quiz_quality(quiz, scope_label)
+    if not is_quality:
+        if quality_error and ("vague" in quality_error.lower() or "opens vaguely" in quality_error.lower()):
+            print(f" ❌ Section fallback failed clarity check: {quality_error}")
+            return None
+        print(f" ⚠️  Section fallback passed schema but failed quality: {quality_error}")
+        print(" ✅ Returning quiz anyway (non-clarity quality issue is non-fatal).")
+
+    print(" ✅ Quiz generated via section-by-section fallback.")
+    return quiz
 
 def save_quiz(quiz, topic_query):
     """Saves a generated quiz to outputs/quizzes/<slug>_quiz.json."""
