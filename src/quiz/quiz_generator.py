@@ -35,7 +35,25 @@ RULES YOU MUST FOLLOW:
    Example of a GOOD distractor: "Central Programming Unit" (plausible mix-up)
 4. Every question must include a "topic_id" -- a short lowercase snake_case tag
    summarizing the sub-topic it tests (e.g. "backpropagation", "gradient_descent").
-5. Follow this EXACT JSON schema:
+5. SELF-CONTAINMENT (critical): every question must be answerable by someone who
+   has ONLY the question in front of them -- not the source document. If the
+   material uses a label, ID, or name (e.g. "Design 3", "Table 2", "Method B"),
+   the question must briefly restate what that label actually IS or DOES before
+   asking about it, instead of assuming the reader has memorized the label.
+   BAD:  "Which design saves the company $110,000 per year?"
+         (unanswerable without memorizing an arbitrary label-to-fact mapping)
+   GOOD: "One proposed change eliminates noise-word indices from the search
+         system, cutting server costs. How much does this save per year?"
+         (the question itself explains what's being asked about)
+6. Avoid fill-in-the-blank questions where the blank is just an arbitrary label,
+   ID, or number with no conceptual content (e.g. "Design ____ saves $24,000" is
+   BAD -- it tests memorization of a label, not understanding). Prefer blanks
+   that test a concept, mechanism, or reasoning step, phrased so the surrounding
+   sentence gives enough context to reason toward the answer.
+7. Prefer questions that test UNDERSTANDING (why something works, what a change
+   accomplishes, how two things compare) over pure lookup of an isolated number,
+   whenever the source material supports it.
+8. Follow this EXACT JSON schema:
 
 {
   "mcq": [
@@ -208,3 +226,7 @@ if __name__ == "__main__":
     if quiz:
         print_quiz(quiz)
         save_quiz(quiz, topic)
+
+
+
+        

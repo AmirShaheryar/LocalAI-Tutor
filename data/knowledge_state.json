@@ -238,5 +238,37 @@
         "timestamp": "2026-08-11T15:15:47.266725+00:00"
       }
     ]
+  },
+  "kwillagestability": {
+    "mastery": 0.1714,
+    "attempts": 5,
+    "correct": 0,
+    "history": [
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-12T07:04:57.657473+00:00"
+      },
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-12T07:04:57.769227+00:00"
+      },
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-12T07:04:58.010567+00:00"
+      },
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-12T07:04:58.112265+00:00"
+      },
+      {
+        "correct": false,
+        "time_taken": null,
+        "timestamp": "2026-08-12T07:04:58.175891+00:00"
+      }
+    ]
   }
 }
